@@ -59,7 +59,7 @@ description = "Windows-only utilities for arranging and managing Matplotlib and 
 authors = [
     { name = "Per A. Brodtkorb", email = "per.andreas.brodtkorb@gmail.com" }
 ]
-license = { file = "LICENSE.md" }
+license = { file = "LICENSE" }
 readme = "README.md"
 
 classifiers = [
@@ -90,17 +90,20 @@ keywords = [
 requires-python = ">=3.10"
 
 dependencies = [
-    "matplotlib>=3.8.0",
     'pywin32; platform_system == "Windows"',
 ]
 
 [project.optional-dependencies]
+plot = [
+    "matplotlib>=3.8.0",
+]
 wx = [
     "wxPython>=4.2",
 ]
 
 [dependency-groups]
 test = [
+    "matplotlib>=3.8.0",
     "mypy>=1.11.2",
     "pytest>=8.0",
     "ruff>=0.12",
