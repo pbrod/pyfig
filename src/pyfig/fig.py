@@ -510,7 +510,7 @@ class WindowManager:
 
             try:
                 out.append(int(arg))
-            except Exception as exc:
+            except (TypeError, ValueError) as exc:
                 raise TypeError(
                     f"Invalid figure identifier: {arg!r}"
                 ) from exc
@@ -1503,7 +1503,7 @@ class WindowManager:
             Wait time between windows (float) or wait for input.
         """
 
-        def _next_index(i):
+        def _next_index(i: int) -> int:
             if isinstance(interval, (int, float)):
                 time.sleep(max(0.0, float(interval)))
                 return i + pairs
