@@ -76,7 +76,7 @@ Examples
 # Imports
 # ======================================================================
 from __future__ import annotations
-
+import math
 import os
 import sys
 import time
@@ -112,7 +112,6 @@ try:
 except ImportError:
     wx = None
 
-import numpy as _np
 
 # typehint aliases
 FigureNumber = int
@@ -1325,7 +1324,7 @@ class WindowManager:
         y_step = 25
         x_step = border = 5
         if figs_per_stack is None:
-            figs_per_stack = int(_np.fix(0.7 * (sh - border) / y_step))
+            figs_per_stack = int(0.7 * (sh - border) / y_step)
 
         for iy, h in enumerate(handles):
             _x, _y, w, hgt = self.get_window_position_and_size(h)
@@ -1375,15 +1374,15 @@ class WindowManager:
         if nfigs == 0:
             return
         n_per_tile = nfigs if pairs is None else pairs
-        nlayers = int(_np.ceil(nfigs / float(n_per_tile)))
-        nh = int(max(2, _np.ceil(_np.sqrt(n_per_tile))))
-        nv = int(max(2, _np.ceil(n_per_tile / float(nh))))
+        nlayers = int(math.ceil(nfigs / float(n_per_tile)))
+        nh = int(max(2, math.ceil(math.sqrt(n_per_tile))))
+        nv = int(max(2, math.ceil(n_per_tile / float(nh))))
 
         sx, sy, sw, sh = self.get_screen_position_and_size(handles)
         hspc, topspc, medspc, botspc = 10, 20, 10, 20
 
-        fig_w = int(_np.round((sw - (nh + 1) * hspc) / float(nh)))
-        fig_h = int(_np.round((sh - (topspc + botspc) - (nv - 1) * medspc) / float(nv)))
+        fig_w = int(round((sw - (nh + 1) * hspc) / float(nh)))
+        fig_h = int(round((sh - (topspc + botspc) - (nv - 1) * medspc) / float(nv)))
 
         idx = 0
         for _layer in range(nlayers):
