@@ -32,7 +32,7 @@ from pyfig import fig
 fig.tile()
 ```
 
-![Tile layout](docs/images/tile.png)
+![Tile layout](https://raw.githubusercontent.com/pbrod/pyfig/main/docs/images/tile.png)
 
 ### Stack all open figures with partial overlap
 
@@ -44,7 +44,7 @@ from pyfig import fig
 fig.stack()
 ```
 
-![Stack layout](docs/images/stack.png)
+![Stack layout](https://raw.githubusercontent.com/pbrod/pyfig/main/docs/images/stack.png)
 
 
 ### Snap a figure to the right side of the screen
@@ -55,7 +55,7 @@ Snap figure number four to the right half of the screen.
 fig.snap_right(4)
 ```
 
-![Snap-right layout](docs/images/snap_right.png)
+![Snap-right layout](https://raw.githubusercontent.com/pbrod/pyfig/main/docs/images/snap_right.png)
 
 ---
 
