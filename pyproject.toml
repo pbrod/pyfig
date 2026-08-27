@@ -104,6 +104,7 @@ wx = [
 
 [dependency-groups]
 test = [
+    "types-pywin32",
     "PyQt6>=6.6",
     "matplotlib>=3.8.0",
     "mypy>=1.11.2",

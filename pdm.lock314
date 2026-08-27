@@ -5,7 +5,7 @@
 groups = ["default", "release", "test"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.1"
-content_hash = "sha256:f1ef51cdbdcadc5bc0a2c2813fd1da7e3989f8970509e68ac36d7b7937e59604"
+content_hash = "sha256:ad927190dbf101d4525d22aa5480ac10eb972d884e398770eda2a212040bb8f5"
 
 [[metadata.targets]]
 requires_python = ">=3.14"
@@ -1276,6 +1276,18 @@ marker = "python_version >= \"3.14\""
 files = [
     {file = "truststore-0.10.4-py3-none-any.whl", hash = "sha256:adaeaecf1cbb5f4de3b1959b42d41f6fab57b2b1666adb59e89cb0b53361d981"},
     {file = "truststore-0.10.4.tar.gz", hash = "sha256:9d91bd436463ad5e4ee4aba766628dd6cd7010cf3e2461756b3303710eebc301"},
+]
+
+[[package]]
+name = "types-pywin32"
+version = "312.0.0.20260820"
+requires_python = ">=3.10"
+summary = "Typing stubs for pywin32"
+groups = ["test"]
+marker = "python_version >= \"3.14\""
+files = [
+    {file = "types_pywin32-312.0.0.20260820-py3-none-any.whl", hash = "sha256:e6492ffc70ce0039c60442e8ca7ecb807c965a65310d9203d4c3fd162021d757"},
+    {file = "types_pywin32-312.0.0.20260820.tar.gz", hash = "sha256:1c451e461a7584e0a2d641dd7cceed7c8df97524e767e28dd724514dd838cdc8"},
 ]
 
 [[package]]

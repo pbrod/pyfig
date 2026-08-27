@@ -85,7 +85,7 @@ import time
 from collections.abc import Callable, Iterable, Iterator, Sequence
 from functools import wraps
 from logging import Logger
-from typing import Any, Literal
+from typing import Any, Literal, cast
 
 # ---------------- OS Guard --------------------------------------------
 if sys.platform != "win32":
@@ -103,10 +103,9 @@ except ImportError as exc:
 
 # ---------------- Optional wxPython -----------------------------------
 try:
-    import wx
+    import wx  # type: ignore[import-not-found]
 except ImportError:
     wx = None
-
 
 # typehint aliases
 FigureNumber = int
@@ -496,9 +495,11 @@ class WindowManager:
                 continue
 
             try:
-                out.append(int(arg))
+                value = int(arg)  # type: ignore[call-overload]
             except (TypeError, ValueError) as exc:
                 raise TypeError(f"Invalid figure identifier: {arg!r}") from exc
+            else:
+                out.append(value)
 
         return out or self.find_all_figure_numbers()
 
@@ -580,7 +581,7 @@ class WindowManager:
                     plt.close(int(num))
                 except Exception:
                     pass
-
+            # Allow Matplotlib GUI backends to process close events.
             plt.pause(0.05)
 
         except Exception:
@@ -595,7 +596,8 @@ class WindowManager:
                 0,
                 0,
             )
-
+        # Allow Win32 WM_CLOSE messages to be handled, even when
+        # Matplotlib is not available.
         time.sleep(0.05)
 
         # Last resort force close
@@ -1424,10 +1426,10 @@ class WindowManager:
         >>> for ix in range(4):
         ...     f = plt.figure(ix)
 
-        fig.cycle(np.arange(3), interval=1)  # Cycle through figure 0 to 2
+        fig.cycle([0, 1, 2], interval=1)  # Cycle through figure 0 to 2
 
         # Cycle through figure 0 to 2 with figures maximized
-        fig.cycle(np.arange(3), maximize=True, interval=1)
+        fig.cycle([0, 1, 2], maximize=True, interval=1)
         fig.cycle(interval=1)            # Cycle through all figures one at a time
         fig.tile(pairs=2, interval=1)
         fig.cycle(pairs=2, interval=2)   # Cycle through all figures two at a time
@@ -1534,8 +1536,13 @@ class WindowManager:
             self._cycle_console(handles, command, pairs, interval)
             return
 
-        class CycleDialog(wx.Dialog):
-            def __init__(self, parent=None, interval=None, title="Cycle dialog"):
+        class CycleDialog(wx.Dialog):  # type: ignore[misc]
+            def __init__(
+                self,
+                parent: Any = None,
+                interval: Interval | None = None,
+                title: str = "Cycle dialog",
+            ) -> None:
                 super().__init__(parent, title=title, size=(260, 130))
                 if isinstance(interval, (int, float)):
                     self.interval_ms = int(interval * 1000)
@@ -1549,11 +1556,11 @@ class WindowManager:
                 vbox.Add(self._buttons(), 1, wx.ALIGN_CENTER | wx.TOP | wx.BOTTOM, 10)
                 self.SetSizer(vbox)
 
-            def _msg(self):
+            def _msg(self) -> Any:
                 msg = "Press Back or Forward to cycle through figures.\nPress Cancel to exit."
                 return wx.StaticText(self, label=msg, size=(240, 40))
 
-            def _buttons(self):
+            def _buttons(self) -> Any:
                 hbox = wx.BoxSizer(wx.HORIZONTAL)
                 buttons = ["Forward", "Back", "Cancel"]
                 callbacks = [self.on_forward, self.on_backward, self.on_cancel]
@@ -1563,17 +1570,17 @@ class WindowManager:
                     hbox.Add(b, 1, wx.ALIGN_CENTER)
                 return hbox
 
-            def ShowModal(self, *a, **k):
+            def ShowModal(self, *a: Any, **k: Any) -> int:
                 self.timer.Start(self.interval_ms, oneShot=True)
-                return super().ShowModal(*a, **k)
+                return cast(int, super().ShowModal(*a, **k))
 
-            def on_forward(self, evt):
+            def on_forward(self, evt: Any) -> None:
                 self.EndModal(wx.ID_FORWARD)
 
-            def on_backward(self, evt):
+            def on_backward(self, evt: Any) -> None:
                 self.EndModal(wx.ID_BACKWARD)
 
-            def on_cancel(self, evt):
+            def on_cancel(self, evt: Any) -> None:
                 self.EndModal(wx.ID_CANCEL)
 
         app = wx.GetApp()
@@ -1692,7 +1699,8 @@ if __name__ == "__main__":
     # print("Mode:", "wx" if _wm.prefer_wx else "console")
     # print("Figures:", find_all_figure_numbers())
     import matplotlib
-    from utilities.testing import test_docstrings
+
+    from pyfig.testing import test_docstrings
 
     matplotlib.interactive(True)
     test_docstrings(__file__)

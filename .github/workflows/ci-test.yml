@@ -42,7 +42,7 @@ jobs:
           # - "3.15.0-rc.1"
 
     env:
-      MPLBACKEND: Agg
+      MPLBACKEND: QtAgg
 
     # Python 3.15 is experimental until Numba/llvmlite provide support.
     continue-on-error: ${{ startsWith(matrix.python-version, '3.15') }}
@@ -92,7 +92,7 @@ jobs:
     name: Build distribution
 
     needs: test
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout repository

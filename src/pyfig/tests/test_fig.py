@@ -11,6 +11,8 @@ import matplotlib.pyplot as plt
 if sys.platform != "win32":
     pytest.skip("Windows-only package", allow_module_level=True)
 
+import win32gui
+
 from pyfig import fig
 from pyfig.fig import WindowManager
 
@@ -46,7 +48,7 @@ def test_parse_invalid_type() -> None:
 
 def test_safe_call_swallows_win32_errors() -> None:
     def boom() -> None:
-        raise fig.win32gui.error("err")
+        raise win32gui.error(1, "boom", "err")
 
     assert fig._safe_call(boom) is None
 
