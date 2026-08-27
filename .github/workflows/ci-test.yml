@@ -4,12 +4,12 @@ on:
   push:
     branches:
       - develop
-      - master
+      - main
 
   pull_request:
     branches:
       - develop
-      - master
+      - main
 
   schedule:
     # Monday through Friday at 02:00 UTC
