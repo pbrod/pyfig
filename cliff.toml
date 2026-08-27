@@ -2,10 +2,7 @@
 # https://git-cliff.org/docs/configuration
 
 [changelog]
-header = """
-# Changelog
-
-"""
+header = ""
 
 body = """
 {% if version %}
