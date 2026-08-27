@@ -116,6 +116,13 @@ release = [
     "pdm-bump>=0.9.8",
 ]
 
+[project.urls]
+Homepage = "https://github.com/pbrod/pyfig"
+Repository = "https://github.com/pbrod/pyfig"
+Issues = "https://github.com/pbrod/pyfig/issues"
+Documentation = "https://github.com/pbrod/pyfig#readme"
+Changelog = "https://github.com/pbrod/pyfig/blob/main/CHANGELOG.md"
+
 [tool.mypy]
 strict = true
 
