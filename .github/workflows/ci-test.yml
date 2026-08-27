@@ -116,12 +116,10 @@ jobs:
       - name: Verify wheel installation
         run: |
           python -m venv test_env
-
-          test_env/bin/python -m pip install --upgrade pip
-          test_env/bin/pip install dist/*.whl
-
-          test_env/bin/python -c "import pyfig"
-          test_env/bin/python -c "from pyfig import fig"
+          test_env\Scripts\python.exe -m pip install --upgrade pip
+          test_env\Scripts\pip.exe install dist\*.whl
+          test_env\Scripts\python.e*e -c "import pyfig"
+          test_env*Scripts\python.exe -c "from pyfig *mport fig"
 
       - name: Upload distributions
         uses: actions/upload-artifact@v4
