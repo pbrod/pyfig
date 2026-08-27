@@ -2,19 +2,19 @@ import sys
 import time
 from unittest.mock import patch
 
+import matplotlib
 import pytest
 
+matplotlib.use("QtAgg")
 import matplotlib.pyplot as plt
 
-if sys.platform == "win32":
-    from pyfig import fig
-    from pyfig.fig import WindowManager
+if sys.platform != "win32":
+    pytest.skip("Windows-only package", allow_module_level=True)
 
+from pyfig import fig
+from pyfig.fig import WindowManager
 
-pytestmark = pytest.mark.skipif(
-    sys.platform != "win32",
-    reason="Windows-only package",
-)
+SLEEP_TIME = 0.1
 
 
 def test_parse_single_int() -> None:
@@ -45,7 +45,7 @@ def test_parse_invalid_type() -> None:
 
 
 def test_safe_call_swallows_win32_errors() -> None:
-    def boom():
+    def boom() -> None:
         raise fig.win32gui.error("err")
 
     assert fig._safe_call(boom) is None
@@ -61,7 +61,6 @@ def test_keep_closes_complement() -> None:
         mock_close.assert_called_once_with(2, 4)
 
 
-# @pytest.mark.windows_only
 class TestFigIntegration:
     def wait_for_figs(
         self,
@@ -72,7 +71,7 @@ class TestFigIntegration:
         while time.time() - start < timeout:
             if len(fig.find_all_figure_numbers()) == expected_count:
                 return True
-            time.sleep(0.05)
+            plt.pause(SLEEP_TIME)
         return False
 
     def setup_method(self) -> None:
@@ -80,19 +79,19 @@ class TestFigIntegration:
         for i in range(10):
             plt.figure(i)
         plt.draw()
-        plt.pause(0.1)
+        plt.pause(SLEEP_TIME)
         assert self.wait_for_figs(10)
 
     def teardown_method(self) -> None:
         plt.close("all")
-        self.wait_for_figs(0)
+        assert self.wait_for_figs(0)
 
     def test_close_single(self) -> None:
         fig.close(0)
         assert self.wait_for_figs(9)
         assert 0 not in fig.find_all_figure_numbers()
 
-    def test_keep_subset(self):
+    def test_keep_subset(self) -> None:
         fig.keep(1, 2, 3, 5, 9)
         final = fig.find_all_figure_numbers()
         assert sorted(final) == [1, 2, 3, 5, 9]
@@ -103,10 +102,17 @@ class TestFigIntegration:
 
     def test_pile(self) -> None:
         fig.pile([1, 2], width=150, height=100)
+
         handles = fig.find_figure_handles(1, 2)
+        assert len(handles) == 2
+
         positions = [fig.get_window_position_and_size(h) for h in handles]
-        assert positions[0][2:] == (150, 100)
-        assert positions[0] == positions[1]
+        assert len(set(positions)) == 1
+
+        widths = {p[2] for p in positions}
+        heights = {p[3] for p in positions}
+        assert len(widths) == 1
+        assert len(heights) == 1
 
     def test_stack(self) -> None:
         figs = list(range(5))

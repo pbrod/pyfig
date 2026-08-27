@@ -1,5 +1,4 @@
 # /usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 FIG — Figure/Window Manipulation Utilities (Windows-only)
 
@@ -76,19 +75,17 @@ Examples
 # Imports
 # ======================================================================
 from __future__ import annotations
+
+import logging
 import math
 import os
+import re
 import sys
 import time
-import logging
-import re
-
-
 from collections.abc import Callable, Iterable, Iterator, Sequence
 from functools import wraps
 from logging import Logger
 from typing import Any, Literal
-
 
 # ---------------- OS Guard --------------------------------------------
 if sys.platform != "win32":
@@ -97,13 +94,11 @@ if sys.platform != "win32":
 
 # ---------------- Win32 API -------------------------------------------
 try:
-    import win32gui
-    import win32con
     import win32api
+    import win32con
+    import win32gui
 except ImportError as exc:
-    raise ImportError(
-        "pywin32 is required"
-    ) from exc
+    raise ImportError("pywin32 is required") from exc
 
 
 # ---------------- Optional wxPython -----------------------------------
@@ -159,12 +154,7 @@ __all__ = [
     "WindowManager",
 ]
 
-_DEFAULT_USE_WX = (
-    os.environ.get("FIG_USE_WX", "0")
-    .strip()
-    .lower()
-    not in {"0", "false", ""}
-)
+_DEFAULT_USE_WX = os.environ.get("FIG_USE_WX", "0").strip().lower() not in {"0", "false", ""}
 
 
 # ======================================================================
@@ -214,9 +204,7 @@ def _is_window(handle: Handle) -> bool:
         True if the handle is valid and visible.
     """
     try:
-        return bool(win32gui.IsWindow(handle)) and bool(
-            win32gui.IsWindowVisible(handle)
-        )
+        return bool(win32gui.IsWindow(handle)) and bool(win32gui.IsWindowVisible(handle))
     except win32gui.error:
         return False
 
@@ -295,6 +283,7 @@ def _monitor_work_area(
     width, height = right - left, bottom - top
     return left, top, width, height
 
+
 # ======================================================================
 # WindowManager — Core OOP Engine
 # ======================================================================
@@ -318,6 +307,7 @@ class WindowManager:
         Logger instance for reporting errors and debug messages.
 
     """
+
     def __init__(
         self,
         prefer_wx: bool = True,
@@ -327,10 +317,7 @@ class WindowManager:
         self.prefer_wx = bool(prefer_wx)
         self.title_formats = tuple(title_formats)
         self.log = logger or _logger
-        titles = "|".join(
-            re.escape(s)
-            for s in self.title_formats
-        )
+        titles = "|".join(re.escape(s) for s in self.title_formats)
         self._figure_re = re.compile(rf"^(?:{titles})\s+(\d+)(?:\D.*)?$")
 
     # ------------------------------------------------------------------
@@ -487,6 +474,7 @@ class WindowManager:
         Legacy behavior: if no identifiers are given, interpret this as
         “all open figures.”
         """
+
         def flatten(obj: object) -> Iterator[object]:
             if isinstance(obj, str):
                 yield obj
@@ -510,9 +498,7 @@ class WindowManager:
             try:
                 out.append(int(arg))
             except (TypeError, ValueError) as exc:
-                raise TypeError(
-                    f"Invalid figure identifier: {arg!r}"
-                ) from exc
+                raise TypeError(f"Invalid figure identifier: {arg!r}") from exc
 
         return out or self.find_all_figure_numbers()
 
@@ -655,16 +641,14 @@ class WindowManager:
         fig.keep
 
         """
-        self._show_figs(
-            self._parse_figure_numbers(*figure_numbers), win32con.SW_RESTORE
-        )
+        self._show_figs(self._parse_figure_numbers(*figure_numbers), win32con.SW_RESTORE)
 
     def hide(
         self,
         *figure_numbers: FigureArg,
     ) -> None:
         """
-        hide figure windows.
+        Hide figure windows.
 
         Parameters
         ----------
@@ -1102,9 +1086,7 @@ class WindowManager:
         fig.restore
 
         """
-        self._show_figs(
-            self._parse_figure_numbers(*figure_numbers), win32con.SW_SHOWMINIMIZED
-        )
+        self._show_figs(self._parse_figure_numbers(*figure_numbers), win32con.SW_SHOWMINIMIZED)
 
     def maximize(
         self,
@@ -1141,9 +1123,7 @@ class WindowManager:
         fig.restore
 
         """
-        self._show_figs(
-            self._parse_figure_numbers(*figure_numbers), win32con.SW_SHOWMAXIMIZED
-        )
+        self._show_figs(self._parse_figure_numbers(*figure_numbers), win32con.SW_SHOWMAXIMIZED)
 
     # ------------------------------------------------------------------
     # Layout Manipulators
@@ -1555,7 +1535,7 @@ class WindowManager:
             return
 
         class CycleDialog(wx.Dialog):
-            def __init__(self, parent = None, interval = None, title="Cycle dialog"):
+            def __init__(self, parent=None, interval=None, title="Cycle dialog"):
                 super().__init__(parent, title=title, size=(260, 130))
                 if isinstance(interval, (int, float)):
                     self.interval_ms = int(interval * 1000)
@@ -1570,17 +1550,14 @@ class WindowManager:
                 self.SetSizer(vbox)
 
             def _msg(self):
-                msg = (
-                    "Press Back or Forward to cycle through figures.\n"
-                    "Press Cancel to exit."
-                )
+                msg = "Press Back or Forward to cycle through figures.\nPress Cancel to exit."
                 return wx.StaticText(self, label=msg, size=(240, 40))
 
             def _buttons(self):
                 hbox = wx.BoxSizer(wx.HORIZONTAL)
                 buttons = ["Forward", "Back", "Cancel"]
                 callbacks = [self.on_forward, self.on_backward, self.on_cancel]
-                for label, cb in zip(buttons, callbacks):
+                for label, cb in zip(buttons, callbacks, strict=True):
                     b = wx.Button(self, -1, label, size=(70, 30))
                     self.Bind(wx.EVT_BUTTON, cb, b)
                     hbox.Add(b, 1, wx.ALIGN_CENTER)
@@ -1658,7 +1635,6 @@ class WindowManager:
 _wm = WindowManager(prefer_wx=_DEFAULT_USE_WX)
 
 
-
 def set_prefer_wx(enable: bool) -> None:
     """
     Enable or disable wx-based figure cycling.
@@ -1673,12 +1649,11 @@ def set_prefer_wx(enable: bool) -> None:
     _wm = WindowManager(prefer_wx=bool(enable))
 
 
-
 def _delegate(method_name: str) -> Callable[..., Any]:
     method = getattr(WindowManager, method_name)
 
     @wraps(method)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args: Any, **kwargs: Any) -> Any:
         return getattr(_wm, method_name)(*args, **kwargs)
 
     return wrapper
@@ -1716,8 +1691,8 @@ set_size = _delegate("set_size")
 if __name__ == "__main__":
     # print("Mode:", "wx" if _wm.prefer_wx else "console")
     # print("Figures:", find_all_figure_numbers())
-    from utilities.testing import test_docstrings
     import matplotlib
+    from utilities.testing import test_docstrings
 
     matplotlib.interactive(True)
     test_docstrings(__file__)

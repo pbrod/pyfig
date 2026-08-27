@@ -12,6 +12,7 @@
 # Prepare release:
 #   pdm install -G release   # Install release tools if needed
 #   pdm prepare-release      # update CHANGELOG.md. Inspect and verify.
+# Replace v1.0.0 with the most recent release tag:
 #   git log v1.0.0..HEAD --oneline > log.txt
 #   git add .
 #   git commit -m "Prepare release"
@@ -103,6 +104,7 @@ wx = [
 
 [dependency-groups]
 test = [
+    "PyQt6>=6.6",
     "matplotlib>=3.8.0",
     "mypy>=1.11.2",
     "pytest>=8.0",
@@ -184,7 +186,7 @@ format = "ruff format ./src/"  # format code
 check-format = "ruff format --check ./src/"  # format code
 check-style = "ruff check ./src/"  # check code style
 check-types = "mypy ./src/"  # check types
-tests = {cmd = "pytest", env = {MPLBACKEND = "Agg"}}
+tests = {cmd = "pytest", env = {MPLBACKEND = "QtAgg"}}
 test = {composite = ["tests"]}
 all-tests = {composite = ["format", "check-style", "check-types", "tests"]}
 
