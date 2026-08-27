@@ -1,5 +1,13 @@
 # pyfig
 
+[![PyPI version](https://img.shields.io/pypi/v/pyfig.svg)](https://pypi.org/project/pyfig/)
+[![Python versions](https://img.shields.io/pypi/pyversions/pyfig.svg)](https://pypi.org/project/pyfig/)
+[![License](https://img.shields.io/pypi/l/pyfig.svg)](LICENSE)
+[![CI Status](https://github.com/pbrod/pyfig/actions/workflows/ci-test.yml/badge.svg)](https://github.com/pbrod/pyfig/actions/workflows/ci-test.yml)
+[![Ruff](https://img.shields.io/badge/lint-ruff-blueviolet)](https://github.com/astral-sh/ruff)
+[![Mypy](https://img.shields.io/badge/type--checked-mypy-blue)](http://mypy-lang.org/)
+[![Downloads](https://pepy.tech/badge/pyfig/month)](https://pepy.tech/project/pyfig)
+
 Interactive figure and window management for Windows.
 
 `pyfig` is a Windows-only Python package for interactively arranging and managing figure windows created by Matplotlib, Mayavi/TVTK, and Chaco.
