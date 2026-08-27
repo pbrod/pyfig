@@ -7,7 +7,7 @@ from functools import wraps
 
 from .testing import test as _test  # noqa
 
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 
 
 @wraps(_test)
