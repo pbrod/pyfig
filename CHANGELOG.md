@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.0.2] - 2026-08-27
+
+### ♻️ Refactoring
+
+- *(test)* Run pytest in a subprocess
+- *(test)* Run pytest in a subprocess
+
+
+### 📚 Documentation
+
+- *(readme)* Add badges for CI, PyPI, Python versions, downloads, ruff, MyPy, and license
+- *(pyproject)* Add project URLs
+- *(changelog)* Avoid duplicate changelog headers
+- *(readme)* Improve documentation and examples
+
 
 ## [1.0.1] - 2026-08-27
 
