@@ -12,5 +12,5 @@ __version__ = "1.0.1"
 
 
 @wraps(_test)
-def test(*options: str, plugins: Any | None = None) -> int:
-    return _test(__name__, *options, plugins=plugins)
+def test(*options: str) -> int:
+    return _test(__name__, *options)

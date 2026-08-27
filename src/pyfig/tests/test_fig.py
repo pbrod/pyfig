@@ -134,3 +134,8 @@ class TestFigIntegration:
         fig.minimize(1)
         pos = fig.get_window_position_and_size(fig.find_figure_handles(1)[0])
         assert pos[0] <= -32000 or pos[1] <= -32000  # Windows minimized location
+
+
+if __name__ == "__main__":
+    import pyfig
+    pyfig.test()
