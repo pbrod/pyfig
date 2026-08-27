@@ -138,4 +138,5 @@ class TestFigIntegration:
 
 if __name__ == "__main__":
     import pyfig
+
     pyfig.test()

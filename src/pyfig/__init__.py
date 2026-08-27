@@ -4,7 +4,6 @@ if sys.platform != "win32":
     raise OSError("Windows-only module")
 
 from functools import wraps
-from typing import Any
 
 from .testing import test as _test  # noqa
 
