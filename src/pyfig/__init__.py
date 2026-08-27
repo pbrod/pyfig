@@ -8,7 +8,7 @@ from typing import Any
 
 from .testing import test as _test  # noqa
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 
 @wraps(_test)

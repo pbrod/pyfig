@@ -1,5 +1,13 @@
 # Changelog
 
+
+## [1.0.1] - 2026-08-27
+
+### 📚 Documentation
+
+- *(readme)* Fix screenshot links on PyPI
+
+
 ## [1.0.0] - 2026-08-27
 
 ### 🚀 Features
