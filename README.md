@@ -12,7 +12,7 @@ Interactive figure and window management for Windows.
 
 `pyfig` is a Windows-only Python package for interactively arranging and managing figure windows created by Matplotlib, Mayavi/TVTK, and Chaco.
 
-It provides simple functions for:
+It provides convenient functions for:
 
 - Tiling, stacking, piling, and cascading windows
 - Minimizing, maximizing, restoring, and hiding figures
@@ -208,6 +208,30 @@ fig.close()
 
 ---
 
+## Selecting Figures
+
+By default, functions operate on all open figures:
+
+```python
+fig.tile()
+```
+
+You can also target specific figures:
+
+```python
+fig.maximize(4)
+fig.snap_right(4)
+```
+
+or multiple figures:
+
+```python
+fig.stack(1, 2, 3)
+fig.tile([1, 2, 3, 4])
+```
+
+---
+
 ## Examples
 
 ### Tile all open figures
@@ -220,6 +244,9 @@ for i in range(1, 5):
     plt.figure(i)
 
 fig.tile()
+
+# Tile figures in pairs
+fig.tile(pairs=2)
 ```
 
 ### Keep only selected figures
