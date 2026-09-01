@@ -5,7 +5,6 @@
 ### ♻️ Refactoring
 
 - *(test)* Run pytest in a subprocess
-- *(test)* Run pytest in a subprocess
 
 
 ### 📚 Documentation
